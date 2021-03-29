@@ -11,4 +11,14 @@
 |
 */
 
-Route::get('/{any?}', fn() => view('index'))->where('any', '.+');
+Route::get('/', function () {
+    return view('index');
+});
+
+Route::post('/register','RegisterController@register')->name('register');
+Route::get('/logout','LoginController@logout');
+Route::post('/login','LoginController@login')->name('login');
+
+Route::get('/myPage/{id}', function () {
+    return view('myPage');
+});

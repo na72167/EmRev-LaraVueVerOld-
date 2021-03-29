@@ -1,10 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Http\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -15,25 +14,25 @@ class User extends Authenticatable
      *
      * @var array
      */
+
     protected $fillable = [
-        'name', 'email', 'password',
+        'id', //ユーザーID
+        'email', //email
+        'password', //パスワード
+        'roll', //権限
+        'report_flg', //通報確認用フラグ
+        'emailToken', //認証トークン
+        'auth_key_limit', //ログイン情報の期限保持
+        'created_at',  //ユーザーデータ作成時刻
+        'updated_at', //最終更新日時
+        'deleted_at' //ソフトデリートフラグ
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
+     * リレーション関係 : id -> general_profs.user_id
      */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function general_prof()
+    {
+        return $this->hasOne('App\Http\Models\General_prof', 'user_id');
+    }
 }
