@@ -1,9 +1,21 @@
 <template>
-  <div>
     <main>
-      <div class="container">
-        <RouterView />
-      </div>
+        <Header/>
+            <div>
+            <RouterView />
+            </div>
+        <Footer/>
     </main>
-  </div>
 </template>
+
+<script>
+import Header from './components/header/header.vue'
+import Footer from './components/footer/footer.vue'
+
+export default {
+  components: {
+    Header,
+    Footer
+  }
+}
+</script>
