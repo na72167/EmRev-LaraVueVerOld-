@@ -1,12 +1,24 @@
 <template>
-    <Hero />
+    <div>
+        <Hero/>
+        <Review/>
+        <About/>
+        <Contact/>
+    </div>
 </template>
+
 <script>
-import Hero from './hero.vue'
+import Hero from './hero'
+import About from './about'
+import Contact from './contact'
+import Review from './review'
 
 export default {
     components: {
-    Hero
+    Hero,
+    About,
+    Contact,
+    Review
     }
 }
 </script>
