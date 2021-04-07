@@ -4,38 +4,37 @@
         <div class="header__content-wrap">
         <!-- タイトル -->
         <h1 class="header__title" href="index.php"><a href="index.php" class="header__title-link">EmRev</a></h1>
-        <!-- <?php
-            if(empty($_SESSION['user_id'])){
-        ?> -->
             <!-- ナビゲーション(ログイン前のもの。セッション内容で切り替える。) -->
-            <nav class="header__nav">
-            <li class="header__nav-list active-login-menu">LOGIN</li>
-            <li class="header__nav-list active-signup-menu">SIGNUP</li>
+            <nav class="header__nav" v-show="Login_status === false">
+                <li class="header__nav-list active-login-menu" @click="tswitching_auth = 'login'">LOGIN</li>
+                <li class="header__nav-list active-signup-menu" @click="switching_auth = 'signup'">SIGNUP</li>
             </nav>
-        <!-- <?php
-            }elseif(!empty($_SESSION['user_id'])){
-            ?> -->
             <!-- ナビゲーション(ログイン後のもの。セッション内容で切り替える。) -->
-            <nav class="header__nav">
-            <li class="header__nav-list js-toggle-sp-menu">MENU</li>
-            <li class="header__nav-list" ><a href="./reviewRegister-cList.php">REVIEW REGISTRATION</a></li>
-            <li class="header__nav-list"><a href="./logout.php">LOGOUT</a></li>
+            <nav class="header__nav" v-show="Login_status === true">
+                <li class="header__nav-list js-toggle-sp-menu">MENU</li>
+                <li class="header__nav-list"><a href="./reviewRegister-cList.php">REVIEW REGISTRATION</a></li>
+                <li class="header__nav-list"><a href="./logout.php">LOGOUT</a></li>
             </nav>
-        <!-- <?php
-            }
-            ?> -->
         </div>
     </header>
-
     <!-- ここにフラッシュメッセージのコンポーネントを差し込み予定 -->
-
     <!-- メニューバーのコンポーネント差し込み予定 -->
-
 </template>
+
+<script>
+export default {
+    data () {
+        return {
+            Login_status: 'signup'
+        }
+    }
+}
+</script>
+
 <style lang="scss" scope>
     .header{
         height: 70px;
-        // background-color: $primary-color;
+        background-color: #047aed;
         overflow: hidden;
         width: 100%;
 

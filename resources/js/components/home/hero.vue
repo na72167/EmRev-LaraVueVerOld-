@@ -14,18 +14,39 @@
                 <a class="hero__text-aboutLink" href="#index-about">このアプリについて</a>
             </div>
             <div class="hero__signup-loginWrap">
-            <!-- ========会員登録差し込み予定========= -->
-            <!-- ========ログイン機能差し込み予定========= -->
+                <span v-show="switching_auth === 'signup'">
+                    <SignUp/>
+                </span>
+                <span v-show="switching_auth === 'login'">
+                    <Login/>
+                </span>
             </div>
         </div>
     </section>
 </template>
 
+<script>
+import SignUp from './signup'
+import Login from './login'
+
+export default {
+    components: {
+    SignUp,
+    Login
+    },
+    data () {
+        return {
+            switching_auth: 'signup'
+        }
+    }
+}
+</script>
+
 <style lang="scss" scope>
     .hero{
     height: 400px;
     width: 100%;
-    // background-color: $primary-color;
+    background-color: #047aed;
     position: relative;
     &::before{
         //ヒーローバナーの模様部分(この辺場当たり的にスタイルを当ててしまったのであとでキレイにする。)z-index
@@ -82,13 +103,12 @@
         &:hover{
         transition: all .5s;
         background-color: #fff;
-        // color: $primary-color;
+        color: #047aed;
         }
     }
-
-        //jsアニメーション用クラス
-        .hidden{
-            transform: translateY(130%);
-        }
+        // //jsアニメーション用クラス
+        // .hidden{
+        //     transform: translateY(130%);
+        // }
     }
 </style>

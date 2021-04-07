@@ -3,7 +3,7 @@
     <div class="hero__login js-login-style hidden">
 
         <!-- {{-- postメソッド・uriに/register持ちのルーティングにアクセス --}} -->
-        <form method="POST" class="hero__login-formStyle" action="{{ route('login') }}" @submit.prevent="login">
+        <!-- <form method="POST" class="hero__login-formStyle" action="{{ route('login') }}" @submit.prevent="login"> -->
             <!-- @csrf -->
             <h2 class="hero__login-title">Login</h2>
             <div class="hero__login-commonMsgArea">
@@ -16,7 +16,7 @@
                 <!-- 後にphpでエラー時用のスタイルを付属させる様にする。 -->
                 <label class="#">
                     <!-- バリに引っかかった際にはerrクラスを付属させる。 -->
-                    <input class="hero__login-emailForm @error('email') err @enderror" name="email" value="{{ old('email') }}">
+                    <!-- <input class="hero__login-emailForm @error('email') err @enderror" name="email" value="{{ old('email') }}"> -->
                     <div class="hero__login-areaMsg">
                         <!-- @error('password')
                             <span class="" role="alert">
@@ -31,7 +31,7 @@
             <div class="hero__login-passwardField">
                 <label class="#">
                     <!-- 後にphpでエラー時用のスタイルを付属させる様にする。 -->
-                    <input class="hero__login-passwordForm @error('password') err @enderror" name="password" value="{{ old('password') }}" v-model="loginForm.email">
+                    <!-- <input class="hero__login-passwordForm @error('password') err @enderror" name="password" value="{{ old('password') }}" v-model="loginForm.email"> -->
                     <div class="hero__login-areaMsg">
                         <!-- {{-- rollについて --}}
                         {{-- https://www.osaka-kyoiku.ac.jp/~joho/html5_ref/role_attr.php?menutype=2dtaldl01l02l03A0 --}}
@@ -48,7 +48,7 @@
                 <input class="hero__login-registerBtn" type="submit" name="user_register" value="ログイン" v-model="loginForm.password">
             </div>
 
-        </form>
+        <!-- </form> -->
     </div>
 </template>
 
@@ -72,6 +72,7 @@ methods: {
 </script>
 
 <style lang="scss" scoped>
+    .main{
     &__login{
         height: 350px;
         width: 400px;
@@ -108,7 +109,7 @@ methods: {
         top:97px;
         &:focus{
             outline: none;
-            // border-bottom: 1px solid $primary-color;
+            border-bottom: 1px solid #047aed;
         }
         }
         &-passwardField{
@@ -124,7 +125,7 @@ methods: {
         top:177px;
         &:focus{
             outline: none;
-            // border-bottom: 1px solid $primary-color;
+            border-bottom: 1px solid #047aed;
         }
         }
         &-registerBtnField{
@@ -135,10 +136,11 @@ methods: {
         position: absolute;
         top:250px;
         padding: 10px 30px;
-        // background-color: $primary-color;
+        background-color: #047aed;
         border: none;
         border-radius: 5px;
         color: #fff;
         }
+    }
     }
 </style>

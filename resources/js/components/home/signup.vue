@@ -3,7 +3,7 @@
     <div class="hero__signup js-signup-style">
 
         <!-- {{-- postメソッド・uriに/register持ちのルーティングにアクセス --}} -->
-        <form method="POST" class="hero__signup-formStyle" action="{{ route('register') }}" @submit.prevent="signUp">
+        <form class="hero__signup-formStyle" @submit.prevent="signUp">
             <!-- @csrf -->
             <h2 class="hero__signup-title">SignUp</h2>
             <div class="hero__signup-commonMsgArea">
@@ -16,13 +16,12 @@
                 <!-- 後にphpでエラー時用のスタイルを付属させる様にする。 -->
                 <label class="#">
                     <!-- バリに引っかかった際にはerrクラスを付属させる。 -->
-                    <input class="hero__signup-emailForm @error('email') err @enderror" name="email" value="{{ old('email') }}"  v-model="signUpForm.email">
+                    <input class="hero__signup-emailForm" v-model="signUpForm.email">
                     <div class="hero__signup-areaMsg">
-                        <!-- @error('password')
-                            <span class="" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror -->
+                        <!-- メッセージがあった際に表示させる。 -->
+                        <span v-if="signUpEmailValidMessage" style="color: red;">
+                            <strong>{{ Validation.signUpEmailValidMessage }}</strong>
+                        </span>
                     </div>
                 </label>
             </div>
@@ -31,16 +30,13 @@
             <div class="hero__signup-passwardField">
             <label class="#">
                 <!-- 後にphpでエラー時用のスタイルを付属させる様にする。 -->
-                <input class="hero__signup-passwordForm @error('password') err @enderror" name="password" value="{{ old('password') }}" v-model="signUpForm.password">
+                <input class="hero__signup-passwordForm" v-model="signUpForm.password">
 
                 <div class="hero__signup-areaMsg">
-                    <!-- {{-- rollについて --}}
-                    {{-- https://www.osaka-kyoiku.ac.jp/~joho/html5_ref/role_attr.php?menutype=2dtaldl01l02l03A0 --}} -->
-                    <!-- @error('password')
-                        <span class="" role="alert">
-                            <strong>{{ $message }}</strong>
+                    <!-- メッセージがあった際に表示させる。 -->
+                        <span v-if="signUpPasswordValidMessage" style="color: red;">
+                            <strong>{{ Validation.signUpPasswordValidMessage }}</strong>
                         </span>
-                    @enderror -->
                 </div>
             </label>
             </div>
@@ -48,14 +44,13 @@
             <!-- 確認用パスワード入力 -->
             <div class="hero__signup-confirmationPasswardField">
             <!-- 後にphpでエラー時用のスタイルを付属させる様にする。 -->
-            <label class="#">
-                <input class="hero__signup-passwordConfirmationForm" name="password_confirmation" type="password" placeholder="Confirmation Password" value="" v-model="signUpForm.confirmationPassword">
-            </label>
-                <!-- {{-- 確認用パスワードはあくまでパスワードの比較用なのでバリを通す予定無し。 --}} -->
+                <label class="#">
+                    <input class="hero__signup-passwordConfirmationForm" type="password" placeholder="Confirmation Password" v-model="signUpForm.confirmationPassword">
+                </label>
             </div>
 
             <div class="hero__signup-registerBtnField">
-            <input class="hero__signup-registerBtn" type="submit" name="user_register" value="登録する">
+                <button class="hero__signup-registerBtn" type="submit">登録する</button>
             </div>
 
         </form>
@@ -64,28 +59,35 @@
 
 <script>
 export default {
-    data () {
-    return {
-        tab: 1,
-        signUpForm: {
-            email: '',
-            password: '',
-            confirmationPassword: ''
-        },
-    }
-  },
+    data: function() {
+        return {
+            signUpForm: {
+                email: '',
+                password: '',
+                confirmationPassword: '',
+            },
+            Validation:{
+                signUpEmailValidMessage: '',
+                signUpPasswordValidMessage: '',
+            },
+        };
+    },
     methods: {
-        signUp () {
-        console.log(this.loginForm)
+        async signUp () {
+        // authストアのresigterアクションを呼び出す
+        await this.$store.dispatch('auth/register', this.registerForm)
+        // トップページに移動する
+        this.$router.push('/mypage')
         }
-    }
-}
+    },
+};
 </script>
 
 <style lang="scss" scoped>
     //=============================================================
     //ユーザー登録関係のスタイル
     //=============================================================
+    .main{
     &__signup{
         height: 350px;
         width: 400px;
@@ -130,7 +132,7 @@ export default {
         top:27px;
         &:focus{
             outline: none;
-            // border-bottom: 1px solid $primary-color;
+            border-bottom: 1px solid #047aed;
         }
         }
         &-passwardField{
@@ -147,7 +149,7 @@ export default {
         top:27px;
         &:focus{
             outline: none;
-            // border-bottom: 1px solid $primary-color;
+            border-bottom: 1px solid #047aed;
         }
         }
         &-confirmationPasswardField{
@@ -164,7 +166,7 @@ export default {
         top:27px;
         &:focus{
             outline: none;
-            // border-bottom: 1px solid $primary-color;
+            border-bottom: 1px solid #047aed;
         }
         }
 
@@ -177,10 +179,11 @@ export default {
         position: absolute;
         top:30px;
         padding: 10px 30px;
-        // background-color: $primary-color;
+        background-color: #047aed;
         border: none;
         border-radius: 5px;
         color: #fff;
         }
+    }
     }
 </style>
