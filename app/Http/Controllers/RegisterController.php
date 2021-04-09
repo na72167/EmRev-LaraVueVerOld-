@@ -28,11 +28,11 @@ class RegisterController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $latestUser = User::create([
+        $registUser = User::create([
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
         ]);
 
-        return redirect('/myPage/'.$latestUser->id);
+        return $registUser;
     }
 }

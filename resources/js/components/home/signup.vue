@@ -3,6 +3,7 @@
     <div class="hero__signup js-signup-style">
 
         <!-- {{-- postメソッド・uriに/register持ちのルーティングにアクセス --}} -->
+        <!-- ここでボタンを押した時に発火させるメソッドを指定している。 -->
         <form class="hero__signup-formStyle" @submit.prevent="signUp">
             <!-- @csrf -->
             <h2 class="hero__signup-title">SignUp</h2>
@@ -75,6 +76,7 @@ export default {
     methods: {
         async signUp () {
         // authストアのresigterアクションを呼び出す
+        // 多分dispatchの第一引数はstoreフォルダ内のファイルを探している。
         await this.$store.dispatch('auth/register', this.registerForm)
         // トップページに移動する
         this.$router.push('/mypage')

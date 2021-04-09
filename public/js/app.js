@@ -139,6 +139,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -163,10 +171,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      Login_status: 'signup'
-    };
+  methods: {
+    logout: function logout() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _this.$store.dispatch('auth/logout');
+
+              case 2:
+                //ステート内を空にする為に第二引数にnullを指定する。
+                context.commit('setUser', null); // ホームに移動する
+
+                _this.$router.push('/');
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    }
   }
 });
 
@@ -362,6 +392,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
 //
 //
 //
@@ -2628,7 +2659,11 @@ var render = function() {
             _vm._v(" "),
             _vm._m(1),
             _vm._v(" "),
-            _vm._m(2)
+            _c(
+              "li",
+              { staticClass: "header__nav-list", on: { click: _vm.logout } },
+              [_vm._v("LOGOUT")]
+            )
           ]
         )
       ])
@@ -2660,14 +2695,6 @@ var staticRenderFns = [
       _c("a", { attrs: { href: "./reviewRegister-cList.php" } }, [
         _vm._v("REVIEW REGISTRATION")
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "header__nav-list" }, [
-      _c("a", { attrs: { href: "./logout.php" } }, [_vm._v("LOGOUT")])
     ])
   }
 ]
@@ -20017,9 +20044,9 @@ __webpack_require__.r(__webpack_exports__);
  // ルーティングの定義をインポートする
 
 
- // ★　追加
-// ルートコンポーネントをインポートする
+ // ルートコンポーネントをインポートする
 
+ // fromの後ろは恐らくclassかpassを指定される
 
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
@@ -20718,16 +20745,42 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//state・・・vueとlaravel内で扱う扱う情報をまとめたもの。
+//直接値を変更させると思わぬ動作を起こす原因になる為getter(フロントへステート内情報をリターンさせるもの)
+//とmutations(フロント(vue)とサーバー(laravel)をリクエストとリターンをつなぐメソッド群?)
 var state = {
-  user: null
-};
-var getters = {};
+  User: null
+}; //getters・・・ステート内情報を関節的にフロント側へ伝える為のメソッド群。
+
+var getters = {
+  // !!は二重否定の論理演算子。条件が合う(ture)場合はfalse・合わない(false)場合はtrueが入る。
+  // check内の処理はuser内が定義されているかを確認するもの。
+  // Javasciptで二重否定を使う意味、「関数名」と「関数名()」の違い
+  // https://naoyashiga.hatenablog.com/entry/2013/11/19/184938
+  check: function check(state) {
+    return !!state.user;
+  },
+  // user内が定義されているか確認。truの場合はuser内のnameプロパティをreturnする。
+  // falseの場合は''を返す。
+  username: function username(state) {
+    return state.user ? state.user.name : '';
+  }
+}; //触った感じフロントから非同期で発火されたactions内メソッドでフォームから送信されたデータをコントローラーへ送信。
+//コントローラーからリターンされた値をミューテーション内メソッドを経由してステート内情報を更新する。
+//mutations・・・主に同期処理でステートを変更するメソッドをまとめた物
+
 var mutations = {
+  // ステート内のuser変数を更新するメソッド
   setUser: function setUser(state, user) {
     state.user = user;
   }
-};
+}; //actions・・・非同期処理でステートを変更するメソッドをまとめた物
+
 var actions = {
+  //恐らくvueにはcontextやstateなど予め予約されている引数名かregister,setUserが予め用意されているメソッドで
+  //第一引数が予め用意されたクラスが代入された変数を引数として指定してメソッド内で使ってる感じ？
+  //(サイト内のコードをいじりながら使っているのでよく分かってない。)
+  //第二引数は登録フォームから送信された登録情報。
   register: function register(context, data) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
       var response;
@@ -20778,7 +20831,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]); //このファイルは対象ファイル内でstore機能を
+//使える様にする為の物
+
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   modules: {
     auth: _auth__WEBPACK_IMPORTED_MODULE_2__["default"]

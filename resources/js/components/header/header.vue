@@ -13,7 +13,7 @@
             <nav class="header__nav" v-show="Login_status === true">
                 <li class="header__nav-list js-toggle-sp-menu">MENU</li>
                 <li class="header__nav-list"><a href="./reviewRegister-cList.php">REVIEW REGISTRATION</a></li>
-                <li class="header__nav-list"><a href="./logout.php">LOGOUT</a></li>
+                <li class="header__nav-list" @click="logout">LOGOUT</li>
             </nav>
         </div>
     </header>
@@ -23,11 +23,17 @@
 
 <script>
 export default {
-    data () {
-        return {
-            Login_status: 'signup'
+    methods: {
+        async logout () {
+        // authストアのresigterアクションを呼び出す
+        // 多分dispatchの第一引数はstoreフォルダ内のファイルを探している。
+        await this.$store.dispatch('auth/logout')
+        //ステート内を空にする為に第二引数にnullを指定する。
+        context.commit('setUser', null)
+        // ホームに移動する
+        this.$router.push('/')
         }
-    }
+    },
 }
 </script>
 
