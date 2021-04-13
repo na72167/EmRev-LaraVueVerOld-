@@ -108,7 +108,8 @@ module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_header_header_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/header/header.vue */ "./resources/js/components/header/header.vue");
-/* harmony import */ var _components_footer_footer_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/footer/footer.vue */ "./resources/js/components/footer/footer.vue");
+/* harmony import */ var _components_etc_FlashMassage_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/etc/FlashMassage.vue */ "./resources/js/components/etc/FlashMassage.vue");
+/* harmony import */ var _components_footer_footer_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/footer/footer.vue */ "./resources/js/components/footer/footer.vue");
 //
 //
 //
@@ -119,12 +120,51 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     Header: _components_header_header_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Footer: _components_footer_footer_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    FlashMassage: _components_etc_FlashMassage_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Footer: _components_footer_footer_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/etc/FlashMassage.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/etc/FlashMassage.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      flashMessage: {
+        error: '',
+        success: ''
+      }
+    };
   }
 });
 
@@ -170,7 +210,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  computed: {
+    isLogin: function isLogin() {
+      return this.$store.getters['auth/check'];
+    }
+  },
   methods: {
     logout: function logout() {
       var _this = this;
@@ -250,7 +299,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _signup__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./signup */ "./resources/js/components/home/signup.vue");
 /* harmony import */ var _login__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./login */ "./resources/js/components/home/login.vue");
-//
 //
 //
 //
@@ -386,6 +434,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utils_validate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/validate */ "./resources/js/components/utils/validate.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -452,43 +501,121 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
+    var _this = this;
+
+    var validateEmail = function validateEmail(rule, value, callback) {
+      if (_this.signUpForm.email === "" || _this.signUpForm.email === null) {
+        callback(new Error('emailが入力されていません。'));
+      } else if (!Object(_utils_validate__WEBPACK_IMPORTED_MODULE_1__["validEmail"])(_this.signUpForm.email)) {
+        callback(new Error("emailの形式が不正です。"));
+      } else {
+        callback();
+      }
+    };
+
+    var validatePassword = function validatePassword(rule, value, callback) {
+      if (_this.signUpForm.password === "") {
+        callback(new Error("passwordが入力されていません。"));
+      } else if (!Object(_utils_validate__WEBPACK_IMPORTED_MODULE_1__["validPassword"])(_this.signUpForm.password)) {
+        callback(new Error("passwordは8文字以上20文字以内で設定してください。"));
+      } else if (_this.signUpForm.password !== _this.signUpForm.confirmationPassword) {
+        callback(new Error("確認用パスワードが合致しません。"));
+      }
+    };
+
     return {
       signUpForm: {
         email: '',
         password: '',
         confirmationPassword: ''
       },
-      Validation: {
-        signUpEmailValidMessage: '',
-        signUpPasswordValidMessage: ''
+      rules: {
+        email: [{
+          required: true,
+          trigger: 'blur',
+          validator: validateEmail
+        }],
+        password: [{
+          required: true,
+          trigger: "blur",
+          validator: validatePassword
+        }]
       }
     };
   },
   methods: {
     signUp: function signUp() {
-      var _this = this;
+      var _this2 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return _this.$store.dispatch('auth/register', _this.registerForm);
+      this.signUpForm.validate( /*#__PURE__*/function () {
+        var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(valid) {
+          var response;
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  _this2.errorMessage = "";
 
-              case 2:
-                // トップページに移動する
-                _this.$router.push('/mypage');
+                  if (valid) {
+                    _context.next = 3;
+                    break;
+                  }
 
-              case 3:
-              case "end":
-                return _context.stop();
+                  return _context.abrupt("return", false);
+
+                case 3:
+                  _context.prev = 3;
+                  _this2.loading = true;
+                  _context.next = 7;
+                  return createUser(_this2.form);
+
+                case 7:
+                  response = _context.sent;
+                  setNotificationMessage(response.message);
+
+                  _this2.$store.dispatch("app/setLoading");
+
+                  _this2.$router.push('/users');
+
+                  _context.next = 18;
+                  break;
+
+                case 13:
+                  _context.prev = 13;
+                  _context.t0 = _context["catch"](3);
+                  _this2.isError = true;
+                  console.log("Register Process Error!");
+                  _this2.loading = false;
+
+                case 18:
+                case "end":
+                  return _context.stop();
+              }
             }
-          }
-        }, _callee);
-      }))();
+          }, _callee, null, [[3, 13]]);
+        }));
+
+        return function (_x) {
+          return _ref.apply(this, arguments);
+        };
+      }());
+      console.log(this.signUpForm); // // authストアのresigterアクションを呼び出す
+      // // 多分dispatchの第一引数はstoreフォルダ内のファイルを探している。
+      // this.$store.dispatch('auth/register', this.registerForm)
+      // // トップページに移動する
+      // this.$router.push('/mypage')
     }
   }
 });
@@ -2529,16 +2656,57 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  return _c("main", [
+    _c("div", [_c("Header"), _vm._v(" "), _c("FlashMassage")], 1),
+    _vm._v(" "),
+    _c("div", [_c("RouterView")], 1),
+    _vm._v(" "),
+    _c("div", [_c("Footer")], 1)
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/etc/FlashMassage.vue?vue&type=template&id=6bb4f781&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/etc/FlashMassage.vue?vue&type=template&id=6bb4f781& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
   return _c(
-    "main",
+    "div",
+    {
+      directives: [
+        {
+          name: "show",
+          rawName: "v-show",
+          value: _vm.FlashMassge,
+          expression: "FlashMassge"
+        }
+      ]
+    },
     [
-      _c("Header"),
+      _c("div", [
+        _vm._v("\n        " + _vm._s(_vm.flashMessage.error) + "\n    ")
+      ]),
       _vm._v(" "),
-      _c("div", [_c("RouterView")], 1),
-      _vm._v(" "),
-      _c("Footer")
-    ],
-    1
+      _c("div", [
+        _vm._v("\n        " + _vm._s(_vm.flashMessage.success) + "\n    ")
+      ])
+    ]
   )
 }
 var staticRenderFns = []
@@ -2597,75 +2765,47 @@ var render = function() {
       _c("div", { staticClass: "header__content-wrap" }, [
         _vm._m(0),
         _vm._v(" "),
-        _c(
-          "nav",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.Login_status === false,
-                expression: "Login_status === false"
-              }
-            ],
-            staticClass: "header__nav"
-          },
-          [
-            _c(
-              "li",
-              {
-                staticClass: "header__nav-list active-login-menu",
-                on: {
-                  click: function($event) {
-                    _vm.tswitching_auth = "login"
+        _vm.isLogin
+          ? _c("nav", { staticClass: "header__nav" }, [
+              _c("li", { staticClass: "header__nav-list js-toggle-sp-menu" }, [
+                _vm._v("MENU")
+              ]),
+              _vm._v(" "),
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "li",
+                { staticClass: "header__nav-list", on: { click: _vm.logout } },
+                [_vm._v("LOGOUT")]
+              )
+            ])
+          : _c("nav", { staticClass: "header__nav" }, [
+              _c(
+                "li",
+                {
+                  staticClass: "header__nav-list active-login-menu",
+                  on: {
+                    click: function($event) {
+                      _vm.tswitching_auth = "login"
+                    }
                   }
-                }
-              },
-              [_vm._v("LOGIN")]
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              {
-                staticClass: "header__nav-list active-signup-menu",
-                on: {
-                  click: function($event) {
-                    _vm.switching_auth = "signup"
+                },
+                [_vm._v("LOGIN")]
+              ),
+              _vm._v(" "),
+              _c(
+                "li",
+                {
+                  staticClass: "header__nav-list active-signup-menu",
+                  on: {
+                    click: function($event) {
+                      _vm.switching_auth = "signup"
+                    }
                   }
-                }
-              },
-              [_vm._v("SIGNUP")]
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "nav",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.Login_status === true,
-                expression: "Login_status === true"
-              }
-            ],
-            staticClass: "header__nav"
-          },
-          [
-            _c("li", { staticClass: "header__nav-list js-toggle-sp-menu" }, [
-              _vm._v("MENU")
-            ]),
-            _vm._v(" "),
-            _vm._m(1),
-            _vm._v(" "),
-            _c(
-              "li",
-              { staticClass: "header__nav-list", on: { click: _vm.logout } },
-              [_vm._v("LOGOUT")]
-            )
-          ]
-        )
+                },
+                [_vm._v("SIGNUP")]
+              )
+            ])
       ])
     ]
   )
@@ -2899,21 +3039,16 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _c(
-          "span",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.switching_auth === "login",
-                expression: "switching_auth === 'login'"
-              }
-            ]
-          },
-          [_c("Login")],
-          1
-        )
+        _c("span", {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.switching_auth === "login",
+              expression: "switching_auth === 'login'"
+            }
+          ]
+        })
       ])
     ])
   ])
@@ -3276,6 +3411,7 @@ var render = function() {
       "form",
       {
         staticClass: "hero__signup-formStyle",
+        attrs: { model: _vm.signUpForm, rules: _vm.rules },
         on: {
           submit: function($event) {
             $event.preventDefault()
@@ -3312,11 +3448,9 @@ var render = function() {
             }),
             _vm._v(" "),
             _c("div", { staticClass: "hero__signup-areaMsg" }, [
-              _vm.signUpEmailValidMessage
+              _vm.validateEmail
                 ? _c("span", { staticStyle: { color: "red" } }, [
-                    _c("strong", [
-                      _vm._v(_vm._s(_vm.Validation.signUpEmailValidMessage))
-                    ])
+                    _c("strong", [_vm._v(_vm._s(_vm.validateEmail))])
                   ])
                 : _vm._e()
             ])
@@ -3347,11 +3481,9 @@ var render = function() {
             }),
             _vm._v(" "),
             _c("div", { staticClass: "hero__signup-areaMsg" }, [
-              _vm.signUpPasswordValidMessage
+              _vm.validatePassword
                 ? _c("span", { staticStyle: { color: "red" } }, [
-                    _c("strong", [
-                      _vm._v(_vm._s(_vm.Validation.signUpPasswordValidMessage))
-                    ])
+                    _c("strong", [_vm._v(_vm._s(_vm.validatePassword))])
                   ])
                 : _vm._e()
             ])
@@ -20063,6 +20195,75 @@ new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./resources/js/components/etc/FlashMassage.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/etc/FlashMassage.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _FlashMassage_vue_vue_type_template_id_6bb4f781___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FlashMassage.vue?vue&type=template&id=6bb4f781& */ "./resources/js/components/etc/FlashMassage.vue?vue&type=template&id=6bb4f781&");
+/* harmony import */ var _FlashMassage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FlashMassage.vue?vue&type=script&lang=js& */ "./resources/js/components/etc/FlashMassage.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _FlashMassage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _FlashMassage_vue_vue_type_template_id_6bb4f781___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _FlashMassage_vue_vue_type_template_id_6bb4f781___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/etc/FlashMassage.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/etc/FlashMassage.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/etc/FlashMassage.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMassage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./FlashMassage.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/etc/FlashMassage.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMassage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/etc/FlashMassage.vue?vue&type=template&id=6bb4f781&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/etc/FlashMassage.vue?vue&type=template&id=6bb4f781& ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMassage_vue_vue_type_template_id_6bb4f781___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./FlashMassage.vue?vue&type=template&id=6bb4f781& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/etc/FlashMassage.vue?vue&type=template&id=6bb4f781&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMassage_vue_vue_type_template_id_6bb4f781___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FlashMassage_vue_vue_type_template_id_6bb4f781___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/footer/footer.vue":
 /*!***************************************************!*\
   !*** ./resources/js/components/footer/footer.vue ***!
@@ -20692,6 +20893,140 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/utils/validate.js":
+/*!***************************************************!*\
+  !*** ./resources/js/components/utils/validate.js ***!
+  \***************************************************/
+/*! exports provided: validURL, validLowerCase, validUpperCase, validAlphabets, validEmail, validPassword, validNum, validZip, validTel, validHalfNumAlp, validWhiteSpace */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validURL", function() { return validURL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validLowerCase", function() { return validLowerCase; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validUpperCase", function() { return validUpperCase; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validAlphabets", function() { return validAlphabets; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validEmail", function() { return validEmail; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validPassword", function() { return validPassword; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validNum", function() { return validNum; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validZip", function() { return validZip; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validTel", function() { return validTel; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validHalfNumAlp", function() { return validHalfNumAlp; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validWhiteSpace", function() { return validWhiteSpace; });
+//バリテーション関数格納ファイル
+
+/**
+ * URLのバリテーション
+ * @param {String} textval
+ * @return {Boolean}
+ */
+function validURL(url) {
+  var reg = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
+  return reg.test(url);
+}
+/**
+ * 対象引数がすべて小文字アルファベットかを確認
+ * @return {Boolean}
+ * @param {String} str
+ */
+
+function validLowerCase(str) {
+  var reg = /^[a-z]+$/;
+  return reg.test(str);
+}
+/**
+ * 対象引数がすべて大文字アルファベットかを確認
+ * @return {Boolean}
+ * @param {String} str
+ */
+
+function validUpperCase(str) {
+  var reg = /^[A-Z]+$/;
+  return reg.test(str);
+}
+/**
+ * 対象引数が大文字か小文字のアルファベットかを確認。
+ * @param {String} str
+ * @param {Boolean}
+ */
+
+function validAlphabets(str) {
+  var reg = /^[A-Za-z]+$/;
+  return reg.test(str);
+}
+/**
+ * emailのバリテーション
+ * @param {String} email
+ * @return {Boolean}
+ */
+
+function validEmail(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+/**
+ * パスワードのバリテーション
+ * @param {String} password
+ * @return {Boolean}
+ */
+
+function validPassword(password) {
+  var re = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]{8,20}$/;
+  return re.test(password);
+}
+/**
+ * 数字のバリテーション
+ * @param {String} number
+ * @return {Boolean}
+ */
+
+function validNum(num) {
+  var re = /^[0-9]+$/;
+  return re.test(num);
+}
+/**
+ * zipファイルのバリテーション
+ * @param {String} zip
+ * @return {Boolean}
+ */
+
+function validZip(zip) {
+  var re = /^\d{3}[-]\d{4}$|^\d{3}[-]\d{2}$|^\d{3}$/;
+  return re.test(zip);
+}
+/**
+ * 電話番号のバリテーション
+ * @param {String} tel
+ * @return {Boolean}
+ */
+
+function validTel(tel) {
+  var re = /^0\d{1,4}-\d{1,4}-\d{3,4}$/;
+  return re.test(tel);
+}
+/**
+ * 半角全角英数字か確認するバリテーション
+ * @param {String} halfNumAlp
+ * @return {Boolean}
+ */
+
+function validHalfNumAlp(halfNumAlp) {
+  var re = /^[0-9a-zA-Z]*$/;
+  return re.test(halfNumAlp);
+}
+/**
+ * 空白かを確認する?バリテーション
+ * @param {String} halfNumAlp
+ * @return {Boolean}
+ */
+
+function validWhiteSpace(string) {
+  var re = /^[\x20\u3000]+$/;
+  return re.test(string);
+}
+
+/***/ }),
+
 /***/ "./resources/js/router.js":
 /*!********************************!*\
   !*** ./resources/js/router.js ***!
@@ -20815,6 +21150,85 @@ var actions = {
 
 /***/ }),
 
+/***/ "./resources/js/store/flashMessage.js":
+/*!********************************************!*\
+  !*** ./resources/js/store/flashMessage.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//state・・・vueとlaravel内で扱う扱う情報をまとめたもの。
+//直接値を変更させると思わぬ動作を起こす原因になる為getter(フロントへステート内情報をリターンさせるもの)
+//とmutations(フロント(vue)とサーバー(laravel)をリクエストとリターンをつなぐメソッド群?)
+var state = {
+  message: null
+}; //getters・・・ステート内情報を関節的にフロント側へ伝える為のメソッド群。
+
+var getters = {
+  massageCheck: function massageCheck(state) {
+    return !!state.message;
+  }
+}; //触った感じフロントから非同期で発火されたactions内メソッドでフォームから送信されたデータをコントローラーへ送信。
+//コントローラーからリターンされた値をミューテーション内メソッドを経由してステート内情報を更新する。
+//mutations・・・主に同期処理でステートを変更するメソッドをまとめた物
+
+var mutations = {
+  // ステート内のuser変数を更新するメソッド
+  setUser: function setUser(state, message) {
+    state.message = message;
+  }
+}; //actions・・・非同期処理でステートを変更するメソッドをまとめた物
+
+var actions = {
+  //恐らくvueにはcontextやstateなど予め予約されている引数名かregister,setUserが予め用意されているメソッドで
+  //第一引数が予め用意されたクラスが代入された変数を引数として指定してメソッド内で使ってる感じ？
+  //(サイト内のコードをいじりながら使っているのでよく分かってない。)
+  //第二引数は登録フォームから送信された登録情報。
+  // ====まだ======
+  register: function register(context, data) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return axios.post('/api/register', data);
+
+            case 2:
+              response = _context.sent;
+              //アクションの第一引数にはコンテキストオブジェクトが渡されます。コンテキストオブジェクトにはミューテーションを呼び出すための commit メソッドなどが入っています。
+              context.commit('setUser', response.data);
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  mutations: mutations,
+  actions: actions
+});
+
+/***/ }),
+
 /***/ "./resources/js/store/index.js":
 /*!*************************************!*\
   !*** ./resources/js/store/index.js ***!
@@ -20828,6 +21242,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./auth */ "./resources/js/store/auth.js");
+/* harmony import */ var _flashMessage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./flashMessage */ "./resources/js/store/flashMessage.js");
+
 
 
 
@@ -20836,7 +21252,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   modules: {
-    auth: _auth__WEBPACK_IMPORTED_MODULE_2__["default"]
+    auth: _auth__WEBPACK_IMPORTED_MODULE_2__["default"],
+    flashMessage: _flashMessage__WEBPACK_IMPORTED_MODULE_4__["default"]
   }
 });
 /* harmony default export */ __webpack_exports__["default"] = (store);

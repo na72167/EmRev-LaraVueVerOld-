@@ -18,7 +18,6 @@
                     <SignUp/>
                 </span>
                 <span v-show="switching_auth === 'login'">
-                    <Login/>
                 </span>
             </div>
         </div>
