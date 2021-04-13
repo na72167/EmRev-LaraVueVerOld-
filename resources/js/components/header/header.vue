@@ -4,30 +4,45 @@
         <div class="header__content-wrap">
         <!-- タイトル -->
         <h1 class="header__title" href="index.php"><a href="index.php" class="header__title-link">EmRev</a></h1>
-            <!-- ナビゲーション(ログイン前のもの。セッション内容で切り替える。) -->
-            <nav class="header__nav" v-show="Login_status === false">
+            <!-- v-show・v-ifの使い分け -->
+            <!-- 判断元がtrueかfalse・・・v-if -->
+            <!-- それ以外の判断元・・・v-show -->
+            <!-- もっと詳しく -->
+            <!-- https://qiita.com/Aqua_ix/items/61eac355f3c24d7676e1 -->
+            <!-- ステート内にログイン履歴があるかどうかどうかを元に表示判定をする。 -->
+            <!-- ture -->
+            <nav class="header__nav" v-if="isLogin">
+                <li class="header__nav-list js-toggle-sp-menu">MENU</li>
+                <li class="header__nav-list"><a href="./reviewRegister-cList.php">REVIEW REGISTRATION</a></li>
+                <li class="header__nav-list" @click="logout">LOGOUT</li>
+            </nav>
+            <!-- false(正確にはそれ以外) -->
+            <nav class="header__nav" v-else>
                 <li class="header__nav-list active-login-menu" @click="tswitching_auth = 'login'">LOGIN</li>
                 <li class="header__nav-list active-signup-menu" @click="switching_auth = 'signup'">SIGNUP</li>
             </nav>
-            <!-- ナビゲーション(ログイン後のもの。セッション内容で切り替える。) -->
-            <nav class="header__nav" v-show="Login_status === true">
-                <li class="header__nav-list js-toggle-sp-menu">MENU</li>
-                <li class="header__nav-list"><a href="./reviewRegister-cList.php">REVIEW REGISTRATION</a></li>
-                <li class="header__nav-list"><a href="./logout.php">LOGOUT</a></li>
-            </nav>
         </div>
     </header>
-    <!-- ここにフラッシュメッセージのコンポーネントを差し込み予定 -->
-    <!-- メニューバーのコンポーネント差し込み予定 -->
 </template>
 
 <script>
 export default {
-    data () {
-        return {
-            Login_status: 'signup'
+    computed: {
+        isLogin () {
+        return this.$store.getters['auth/check']
         }
-    }
+    },
+    methods: {
+        async logout () {
+        // authストアのresigterアクションを呼び出す
+        // 多分dispatchの第一引数はstoreフォルダ内のファイルを探している。
+        await this.$store.dispatch('auth/logout')
+        //ステート内を空にする為に第二引数にnullを指定する。
+        context.commit('setUser', null)
+        // ホームに移動する
+        this.$router.push('/')
+        }
+    },
 }
 </script>
 

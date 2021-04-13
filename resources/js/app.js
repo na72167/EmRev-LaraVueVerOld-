@@ -1,9 +1,11 @@
 import Vue from 'vue'
 // ルーティングの定義をインポートする
 import router from './router'
-import store from './store' // ★　追加
+import store from './store'
 // ルートコンポーネントをインポートする
 import App from './App.vue'
+
+// fromの後ろは恐らくclassかpassを指定される
 
 new Vue({
   el: '#app',
